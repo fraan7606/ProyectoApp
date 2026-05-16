@@ -35,7 +35,7 @@ fun LoginScreen(context: Context) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Logo
+        // Logo de la aplicación
         LogoSection()
 
         Spacer(modifier = Modifier.height(48.dp))

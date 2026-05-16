@@ -52,7 +52,7 @@ fun EcommerceScreen(onBackPressed: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Top Bar
+        // Barra superior
         TopAppBar(
             title = {
                 Text(
@@ -100,7 +100,7 @@ fun EcommerceScreen(onBackPressed: () -> Unit) {
             )
         )
 
-        // Content
+        // Contenido
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(16.dp),
@@ -115,7 +115,7 @@ fun EcommerceScreen(onBackPressed: () -> Unit) {
                 )
             }
 
-            items(getSampleProducts()) { product ->
+            items(obtenerProductos()) { product ->
                 ProductCard(
                     product = product,
                     onAddToCart = { cartCount++ }
@@ -124,7 +124,7 @@ fun EcommerceScreen(onBackPressed: () -> Unit) {
         }
     }
 
-    // Carrito message
+    // Mensaje del carrito
     if (showCartMessage) {
         AlertDialog(
             onDismissRequest = { showCartMessage = false },
@@ -190,32 +190,32 @@ data class Product(
     val price: Double
 )
 
-fun getSampleProducts(): List<Product> {
+fun obtenerProductos(): List<Product> {
     return listOf(
         Product(
-            name = "Laptop Gaming Pro",
-            description = "Procesador i7, 16GB RAM, RTX 3060",
+            name = "Portátil ASUS ROG",
+            description = "Intel i7-12700H, 16GB DDR5, RTX 3060",
             price = 1299.99
         ),
         Product(
-            name = "Smartphone X",
-            description = "Pantalla 6.5', 128GB, 5G",
+            name = "Samsung Galaxy S23",
+            description = "Pantalla 6.1 pulgadas, 256GB, 5G",
             price = 799.99
         ),
         Product(
-            name = "Auriculares Wireless",
-            description = "Cancelación de ruido, 30h batería",
-            price = 199.99
+            name = "Sony WH-1000XM5",
+            description = "Cancelación de ruido activa, 30 horas batería",
+            price = 349.99
         ),
         Product(
-            name = "Tablet Ultra",
-            description = "10.9', 256GB, Apple Pencil",
-            price = 599.99
+            name = "iPad Air 5",
+            description = "10.9 pulgadas, 256GB, compatible Apple Pencil",
+            price = 649.99
         ),
         Product(
-            name = "Smartwatch Sport",
-            description = "GPS, monitor cardíaco, resistente al agua",
-            price = 299.99
+            name = "Apple Watch Series 8",
+            description = "GPS, monitor cardíaco, resistencia agua 50m",
+            price = 399.99
         )
     )
 }
