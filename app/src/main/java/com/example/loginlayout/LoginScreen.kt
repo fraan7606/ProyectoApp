@@ -1,5 +1,7 @@
 package com.example.loginlayout
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.loginlayout.ui.theme.LoginLayoutTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(context: Context) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -84,7 +86,10 @@ fun LoginScreen() {
 
         // Botón de inicio de sesión
         Button(
-            onClick = { /* Manejar login */ },
+            onClick = {
+                val intent = Intent(context, EcommerceActivity::class.java)
+                context.startActivity(intent)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -144,6 +149,6 @@ fun LogoSection() {
 @Composable
 fun LoginScreenPreview() {
     LoginLayoutTheme {
-        LoginScreen()
+        // LoginScreen(context) - Preview no puede usar context real
     }
 }
