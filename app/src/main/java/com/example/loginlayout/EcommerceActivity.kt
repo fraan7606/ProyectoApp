@@ -13,6 +13,10 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.loginlayout.ui.theme.LoginLayoutTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
 
 class EcommerceActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,14 +43,18 @@ class EcommerceActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EcommerceScreen(onBackPressed: () -> Unit) {
+    var cartCount by remember { mutableStateOf(0) }
+    var showCartMessage by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         // Top Bar
         TopAppBar(
-            title = { 
+            title = {
                 Text(
                     "Mi Ecommerce",
                     fontWeight = FontWeight.Bold
@@ -57,8 +66,30 @@ fun EcommerceScreen(onBackPressed: () -> Unit) {
                 }
             },
             actions = {
-                IconButton(onClick = { }) {
-                    Icon(Icons.Default.ShoppingCart, contentDescription = "Carrito")
+                Box {
+                    IconButton(onClick = { showCartMessage = true }) {
+                        Icon(Icons.Default.ShoppingCart, contentDescription = "Carrito")
+                        if (cartCount > 0) {
+                            Box(
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .offset(x = 10.dp, y = (-10).dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = Color.Red
+                                ) {
+                                    Text(
+                                        text = cartCount.toString(),
+                                        color = Color.White,
+                                        fontSize = 12.sp,
+                                        modifier = Modifier.padding(2.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
@@ -85,14 +116,31 @@ fun EcommerceScreen(onBackPressed: () -> Unit) {
             }
 
             items(getSampleProducts()) { product ->
-                ProductCard(product)
+                ProductCard(
+                    product = product,
+                    onAddToCart = { cartCount++ }
+                )
             }
         }
+    }
+
+    // Carrito message
+    if (showCartMessage) {
+        AlertDialog(
+            onDismissRequest = { showCartMessage = false },
+            title = { Text("Carrito") },
+            text = { Text("Tienes $cartCount productos en el carrito") },
+            confirmButton = {
+                TextButton(onClick = { showCartMessage = false }) {
+                    Text("Cerrar")
+                }
+            }
+        )
     }
 }
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(product: Product, onAddToCart: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -126,7 +174,7 @@ fun ProductCard(product: Product) {
                     color = MaterialTheme.colorScheme.primary
                 )
                 Button(
-                    onClick = { },
+                    onClick = onAddToCart,
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text("Agregar")
